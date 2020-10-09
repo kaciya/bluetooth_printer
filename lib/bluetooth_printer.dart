@@ -18,24 +18,32 @@ class BluetoothPrinter {
   }
 
   /*连接蓝牙设备*/
-  Future<int> connectBlueTooth(int index)async{
-    int result = await _methodChannel.invokeMethod('connectBlueTooth',{'index':index});
+  Future<int> connectBlueTooth(int index) async {
+    int result =
+        await _methodChannel.invokeMethod('connectBlueTooth', {'index': index});
     return result;
   }
 
+  /*断开蓝牙设备*/
+  Future close() async {
+    _methodChannel.invokeMethod('close');
+  }
+
   /*打印*/
-  Future<int> print(Map orderInfo)async{
-    int result = await _methodChannel.invokeMethod('print',{'orderJsonStr':json.encode(orderInfo)});
+  Future<int> print(Map orderInfo) async {
+    int result = await _methodChannel
+        .invokeMethod('print', {'orderJsonStr': json.encode(orderInfo)});
     return result;
   }
 
   /*是否已连接*/
-  Future<bool> isConnected()async{
+  Future<bool> isConnected() async {
     int result = await _methodChannel.invokeMethod('isConnected');
-    return result==1?true:false;
+    return result == 1 ? true : false;
   }
 
   /*监听扫描蓝牙设备回调事件*/
-  Stream<List<dynamic>> get scanBlueToothEvent =>
-      _scanBlueToothEvent.receiveBroadcastStream().map((data)=>json.decode(data));
+  Stream<List<dynamic>> get scanBlueToothEvent => _scanBlueToothEvent
+      .receiveBroadcastStream()
+      .map((data) => json.decode(data));
 }
